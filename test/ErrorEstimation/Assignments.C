@@ -121,8 +121,6 @@ float func4(float x, float y) {
 //CHECK-NEXT:     x = z + y;
 //CHECK-NEXT:     _EERepl_x1 = x;
 //CHECK-NEXT:     float func4_return = x;
-//CHECK-NEXT:     goto _label0;
-//CHECK-NEXT:   _label0:
 //CHECK-NEXT:     * _d_x += 1;
 //CHECK-NEXT:     {
 //CHECK-NEXT:         float _r_d0 = * _d_x;

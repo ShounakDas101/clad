@@ -167,8 +167,6 @@ float func3(float x, float y) {
 //CHECK-NEXT:     _EERepl_t0 = t;
 //CHECK-NEXT:     _EERepl_y1 = y;
 //CHECK-NEXT:     float func3_return = t;
-//CHECK-NEXT:     goto _label0;
-//CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_t += 1;
 //CHECK-NEXT:     {
 //CHECK-NEXT:         float _r2 = _d_t * _t2;

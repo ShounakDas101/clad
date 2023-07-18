@@ -91,7 +91,9 @@ namespace clad {
 
     // Function to Differentiate with Enzyme as Backend
     void DifferentiateWithEnzyme();
-
+    // Whether Stmt is Return;
+    bool OnlyReturn = false;
+	
   public:
     using direction = rmv::direction;
     clang::Expr* dfdx() {
