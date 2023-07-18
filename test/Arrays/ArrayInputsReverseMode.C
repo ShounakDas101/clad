@@ -25,8 +25,6 @@ double addArr(double *arr, int n) {
 //CHECK-NEXT:         ret += arr[clad::push(_t1, i)];
 //CHECK-NEXT:     }
 //CHECK-NEXT:     double addArr_return = ret;
-//CHECK-NEXT:     goto _label0;
-//CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_ret += _d_y;
 //CHECK-NEXT:     for (; _t0; _t0--) {
 //CHECK-NEXT:         {

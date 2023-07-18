@@ -107,8 +107,6 @@ double const_dot_product(double x, double y, double z) {
 //CHECK-NEXT:       _t5 = vars[2];
 //CHECK-NEXT:       _t4 = consts[2];
 //CHECK-NEXT:       double const_dot_product_return = _t1 * _t0 + _t3 * _t2 + _t5 * _t4;
-//CHECK-NEXT:       goto _label0;
-//CHECK-NEXT:     _label0:
 //CHECK-NEXT:       {
 //CHECK-NEXT:           double _r0 = 1 * _t0;
 //CHECK-NEXT:           _d_vars[0] += _r0;
