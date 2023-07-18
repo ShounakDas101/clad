@@ -286,8 +286,6 @@ double fn4(double* arr, int n) {
 // CHECK-NEXT:     _d_res += 1;
 // CHECK-NEXT:     for (; _t2; _t2--) {
 // CHECK-NEXT:         {
-// CHECK-NEXT:             int _t7 = clad::pop(_t6);
-// CHECK-NEXT:             int _t4 = clad::pop(_t3);
 // CHECK-NEXT:             double _r_d1 = _d_res;
 // CHECK-NEXT:             _d_res += _r_d1;
 // CHECK-NEXT:             int _t9 = clad::pop(_t8);
@@ -295,6 +293,7 @@ double fn4(double* arr, int n) {
 // CHECK-NEXT:             _d_res -= _r_d1;
 // CHECK-NEXT:         }
 // CHECK-NEXT:         {
+// CHECK-NEXT:		   int _t4 = clad::pop(_t3);
 // CHECK-NEXT:             double _r3 = clad::pop(_t5);
 // CHECK-NEXT:             twice_pullback(_r3, &_d_arr[_t4]);
 // CHECK-NEXT:             double _r2 = _d_arr[_t4];
