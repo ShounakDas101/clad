@@ -285,8 +285,6 @@ double f_cond1(double x, double y) {
 //CHECK:   void f_cond1_grad(double x, double y, clad::array_ref<double> _d_x, clad::array_ref<double> _d_y) {
 //CHECK-NEXT:       bool _cond0;
 //CHECK-NEXT:       _cond0 = x > y;
-//CHECK-NEXT:       goto _label0;
-//CHECK-NEXT:     _label0:
 //CHECK-NEXT:       if (_cond0)
 //CHECK-NEXT:           * _d_x += 1;
 //CHECK-NEXT:       else
@@ -307,8 +305,6 @@ double f_cond2(double x, double y) {
 //CHECK-NEXT:           ;
 //CHECK-NEXT:       else
 //CHECK-NEXT:           _cond1 = y > 0;
-//CHECK-NEXT:       goto _label0;
-//CHECK-NEXT:     _label0:
 //CHECK-NEXT:       if (_cond0)
 //CHECK-NEXT:           * _d_x += 1;
 //CHECK-NEXT:       else if (_cond1)
@@ -856,8 +852,6 @@ float running_sum(float* p, int n) {
 // CHECK-NEXT:         p[clad::push(_t1, i)] += p[clad::push(_t3, i - 1)];
 // CHECK-NEXT:     }
 // CHECK-NEXT:     _t5 = n - 1;
-// CHECK-NEXT:     goto _label0;
-// CHECK-NEXT:   _label0:
 // CHECK-NEXT:     _d_p[_t5] += 1;
 // CHECK-NEXT:     for (; _t0; _t0--) {
 // CHECK-NEXT:         {
