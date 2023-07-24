@@ -1170,8 +1170,16 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
     // been made to to not do the StoreAndRef operation when return type is
     // ValueAndPushforward.
     if (!isCladValueAndPushforwardType(type)) {
+      // Since returned expression may have some side effects affecting reverse
+      // computation (e.g. assignments), we also have to emit it to execute it.
+      Expr* retDeclRefExpr =
+          StoreAndRef(ExprDiff.getExpr(), direction::forward,
+                      utils::ComputeEffectiveFnName(m_Function) + "_return",
+                      /*forceDeclCreation=*/true);
+
       if (m_ExternalSource)
-        m_ExternalSource->ActBeforeFinalisingVisitReturnStmt(ExprDiff);
+        m_ExternalSource->ActBeforeFinalisingVisitReturnStmt(ExprDiff,
+                                                             retDeclRefExpr);
     }
 
     // Create goto to the label.
@@ -1255,6 +1263,8 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
                                        /*DirectInit=*/true);
         if (dfdx())
           addToCurrentBlock(BuildDeclStmt(popVal), direction::reverse);
+        else if(Ref)
+          m_RPopIdxValues.push_back(BuildDeclStmt(popVal));
         else
           m_PopIdxValues.push_back(BuildDeclStmt(popVal));
         IdxStored = StmtDiff(IdxStored.getExpr(), BuildDeclRef(popVal));
@@ -1367,6 +1377,7 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
 
   StmtDiff ReverseModeVisitor::VisitCallExpr(const CallExpr* CE) {
     const FunctionDecl* FD = CE->getDirectCallee();
+    Ref=printArgTypes(CE);//finds if reference passed as argument
     if (!FD) {
       diag(DiagnosticsEngine::Warning,
            CE->getEndLoc(),
@@ -1542,10 +1553,16 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
           block.insert(block.begin() + insertionPoint,
                        BuildDeclStmt(argDiffLocalVD));
           Expr* argDiffLocalE = BuildDeclRef(argDiffLocalVD);
-
+	          int Numref=0;
+          while(!m_RPopIdxValues.empty())
+          {
+            Numref++;
+            block.insert(block.begin() + insertionPoint,m_RPopIdxValues.pop_back_val());
+          }
           // We added local variable to store result of `clad::pop(...)`. Thus
           // we need to correspondingly adjust the insertion point.
           insertionPoint += 1;
+          insertionPoint = insertionPoint+1+Numref;
           // We cannot use the already existing `argDiff.getExpr()` here because
           // it will cause inconsistent pushes and pops to the clad tape.
           // FIXME: Modify `GlobalStoreAndRef` such that its functioning is

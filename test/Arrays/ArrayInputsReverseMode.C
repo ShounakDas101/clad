@@ -24,6 +24,7 @@ double addArr(double *arr, int n) {
 //CHECK-NEXT:         _t0++;
 //CHECK-NEXT:         ret += arr[clad::push(_t1, i)];
 //CHECK-NEXT:     }
+//CHECK-NEXT:     double addArr_return = ret;
 //CHECK-NEXT:     goto _label0;
 //CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_ret += _d_y;
@@ -45,6 +46,7 @@ double f(double *arr) {
 //CHECK:   void f_grad(double *arr, clad::array_ref<double> _d_arr) {
 //CHECK-NEXT:       double *_t0;
 //CHECK-NEXT:       _t0 = arr;
+//CHECK-NEXT:       double f_return = addArr(arr, 3);
 //CHECK-NEXT:       goto _label0;
 //CHECK-NEXT:     _label0:
 //CHECK-NEXT:     {
@@ -82,6 +84,7 @@ float func(float* a, float* b) {
 //CHECK-NEXT:         _ref0 *= clad::push(_t3, b[clad::push(_t5, i)]);
 //CHECK-NEXT:         sum += a[clad::push(_t7, i)];
 //CHECK-NEXT:     }
+//CHECK-NEXT:     float func_return = sum;
 //CHECK-NEXT:     goto _label0;
 //CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_sum += 1;
@@ -107,12 +110,13 @@ float func(float* a, float* b) {
 //CHECK-NEXT: }
 
 float helper(float x) {
-  return 2 * x;
+  return 2 * x; 
 }
 
 // CHECK: void helper_pullback(float x, float _d_y, clad::array_ref<float> _d_x) {
 // CHECK-NEXT:     float _t0;
 // CHECK-NEXT:     _t0 = x;
+// CHECK-NEXT:     float helper_return = 2 * _t0;
 // CHECK-NEXT:     goto _label0;
 // CHECK-NEXT:   _label0:
 // CHECK-NEXT:     {
@@ -141,6 +145,7 @@ float func2(float* a) {
 //CHECK-NEXT:         _t0++;
 //CHECK-NEXT:         sum += helper(clad::push(_t3, a[clad::push(_t1, i)]));
 //CHECK-NEXT:     }
+//CHECK-NEXT:     float func2_return = sum;
 //CHECK-NEXT:     goto _label0;
 //CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_sum += 1;
@@ -175,6 +180,7 @@ float func3(float* a, float* b) {
 //CHECK-NEXT:         _t0++;
 //CHECK-NEXT:         sum += (a[clad::push(_t1, i)] += b[clad::push(_t3, i)]);
 //CHECK-NEXT:     }
+//CHECK-NEXT:     float func3_return = sum;
 //CHECK-NEXT:     goto _label0;
 //CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_sum += 1;
@@ -221,6 +227,7 @@ double func4(double x) {
 //CHECK-NEXT:         clad::push(_t4, arr , 3UL);
 //CHECK-NEXT:         sum += addArr(arr, 3);
 //CHECK-NEXT:     }
+//CHECK-NEXT:     double func4_return = sum;
 //CHECK-NEXT:     goto _label0;
 //CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_sum += 1;
@@ -229,9 +236,9 @@ double func4(double x) {
 //CHECK-NEXT:             double _r_d0 = _d_sum;
 //CHECK-NEXT:             _d_sum += _r_d0;
 //CHECK-NEXT:             clad::array<double> _r5 = clad::pop(_t4);
+//CHECK-NEXT:             clad::array<double> _r4(_d_arr);
 //CHECK-NEXT:             int _grad1 = 0;
 //CHECK-NEXT:             addArr_pullback(_r5, 3, _r_d0, _d_arr, &_grad1);
-//CHECK-NEXT:             clad::array<double> _r4(_d_arr);
 //CHECK-NEXT:             int _r6 = _grad1;
 //CHECK-NEXT:             _d_sum -= _r_d0;
 //CHECK-NEXT:         }
@@ -286,6 +293,7 @@ double func5(int k) {
 //CHECK-NEXT:         clad::push(_t4, arr , n);
 //CHECK-NEXT:         sum += addArr(arr, clad::push(_t5, n));
 //CHECK-NEXT:     }
+//CHECK-NEXT:     double func5_return = sum;
 //CHECK-NEXT:     goto _label0;
 //CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_sum += 1;
@@ -339,6 +347,7 @@ double func6(double seed) {
 //CHECK-NEXT:         clad::push(_t3, arr , 3UL);
 //CHECK-NEXT:         sum += addArr(arr, 3);
 //CHECK-NEXT:     }
+//CHECK-NEXT:     double func6_return = sum;
 //CHECK-NEXT:     goto _label0;
 //CHECK-NEXT:   _label0:
 //CHECK-NEXT:     _d_sum += 1;
@@ -379,15 +388,15 @@ int main() {
   float a1[3] = {1, 1, 1}, a2[3] = {2, 3, 4}, a3[3] = {1, 1, 1}, b[3] = {2, 5, 2};
   float dpa1[3] = {0}, dpa2[3] = {0}, dpa3[3] = {0}, dpb1[3] = {0}, dpb2[3] = {0};
   clad::array_ref<float> da1(dpa1, 3), da2(dpa2, 3), da3(dpa3, 3), db1(dpb1, 3), db2(dpb2, 3);
-
+    
   auto lhs = clad::gradient(func);
   lhs.execute(a1, b, da1, db1);
   printf("Result (a) = {%.2f, %.2f, %.2f}\n", da1[0], da1[1], da1[2]); // CHECK-EXEC: Result (a) = {2.00, 5.00, 2.00}
-
+    
   auto funcArr = clad::gradient(func2);
   funcArr.execute(a2, da2);
   printf("Result = {%.2f, %.2f, %.2f}\n", da2[0], da2[1], da2[2]); // CHECK-EXEC: Result = {2.00, 2.00, 2.00}
-
+    
   auto nested = clad::gradient(func3);
   nested.execute(a3, b, da3, db2);
   printf("Result (b) = {%.2f, %.2f, %.2f}\n", db2[0], db2[1], db2[2]); // CHECK-EXEC: Result (b) = {0.00, 0.00, 0.00}
