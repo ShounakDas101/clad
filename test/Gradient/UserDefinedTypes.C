@@ -335,14 +335,10 @@ double fn6(dcomplex c, double i) {
 // CHECK-NEXT: }
 
 // CHECK: constexpr void real_pullback(double _d_y, clad::array_ref<complex<double> > _d_this){{.*}} {
-// CHECK-NEXT:     goto _label0;
-// CHECK-NEXT:   _label0:
 // CHECK-NEXT:     {{(__real)?}} (* _d_this).{{.*}} += _d_y;
 // CHECK-NEXT: }
 
 // CHECK: constexpr void imag_pullback(double _d_y, clad::array_ref<complex<double> > _d_this){{.*}} {
-// CHECK-NEXT:     goto _label0;
-// CHECK-NEXT:   _label0:
 // CHECK-NEXT:     {{(__imag)?}} (* _d_this).{{.*}} += _d_y;
 // CHECK-NEXT: }
 
