@@ -129,6 +129,8 @@ float f2(float x) {
 // CHECK-NEXT:     _t2 = x;
 // CHECK-NEXT:     _t3 = ::std::exp(_t2);
 // CHECK-NEXT:     _t1 = d_x;
+// CHECK-NEXT:     goto _label0;
+// CHECK-NEXT:   _label0:
 // CHECK-NEXT:     {
 // CHECK-NEXT:         float _r0 = _d_y.value * clad::custom_derivatives{{(::std)?}}::exp_pushforward(_t0, 1.F).pushforward;
 // CHECK-NEXT:         * _d_x += _r0;
