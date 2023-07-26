@@ -533,7 +533,7 @@ StmtDiff VectorForwardModeVisitor::VisitReturnStmt(const ReturnStmt* RS) {
   }
   // Add an empty return statement to the array of statements.
   returnStmts.push_back(
-      m_Sema.ActOnReturnStmt(noLoc, nullptr, getCurrentScope()).get());
+      m_Sema.ActOnReturnStmt(m_Function->getLocation(), nullptr, getCurrentScope()).get());
 
   // Create a return statement from the compound statement.
   Stmt* returnStmt = MakeCompoundStmt(returnStmts);
@@ -571,7 +571,7 @@ VarDeclDiff VectorForwardModeVisitor::DifferentiateVarDecl(const VarDecl* VD) {
   VarDecl* VDDerived =
       BuildVarDecl(GetCladArrayOfType(utils::GetValueType(VD->getType())),
                    "_d_vector_" + VD->getNameAsString(), constructorCallExpr,
-                   false, nullptr, VarDecl::InitializationStyle::CallInit);
+                   true, nullptr, VarDecl::InitializationStyle::CallInit);
 
   m_Variables.emplace(VDClone, BuildDeclRef(VDDerived));
   return VarDeclDiff(VDClone, VDDerived);
