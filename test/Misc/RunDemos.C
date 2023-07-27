@@ -230,8 +230,6 @@
 //CHECK_GRADIENT_DESCENT-NEXT:     double _t1;
 //CHECK_GRADIENT_DESCENT-NEXT:     _t1 = theta_1;
 //CHECK_GRADIENT_DESCENT-NEXT:     _t0 = x;
-//CHECK_GRADIENT_DESCENT-NEXT:     goto _label0;
-//CHECK_GRADIENT_DESCENT-NEXT:   _label0:
 //CHECK_GRADIENT_DESCENT-NEXT:     {
 //CHECK_GRADIENT_DESCENT-NEXT:         * _d_theta_0 += _d_y;
 //CHECK_GRADIENT_DESCENT-NEXT:         double _r0 = _d_y * _t0;
@@ -254,8 +252,6 @@
 //CHECK_GRADIENT_DESCENT-NEXT:     double f_x = f(_t0, _t1, _t2);
 //CHECK_GRADIENT_DESCENT-NEXT:     _t4 = (f_x - y);
 //CHECK_GRADIENT_DESCENT-NEXT:     _t3 = (f_x - y);
-//CHECK_GRADIENT_DESCENT-NEXT:     goto _label0;
-//CHECK_GRADIENT_DESCENT-NEXT:   _label0:
 //CHECK_GRADIENT_DESCENT-NEXT:     {
 //CHECK_GRADIENT_DESCENT-NEXT:         double _r3 = 1 * _t3;
 //CHECK_GRADIENT_DESCENT-NEXT:         _d_f_x += _r3;
