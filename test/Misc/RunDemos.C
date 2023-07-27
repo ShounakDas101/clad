@@ -200,8 +200,6 @@
 // CHECK_PRINT_MODEL_EXEC-NEXT:    _EERepl_z0 = z;
 // CHECK_PRINT_MODEL_EXEC-NEXT:    z = x + y;
 // CHECK_PRINT_MODEL_EXEC-NEXT:    _EERepl_z1 = z;
-// CHECK_PRINT_MODEL_EXEC-NEXT:    goto _label0;
-// CHECK_PRINT_MODEL_EXEC-NEXT:  _label0:
 // CHECK_PRINT_MODEL_EXEC-NEXT:    _d_z += 1;
 // CHECK_PRINT_MODEL_EXEC-NEXT:    {
 // CHECK_PRINT_MODEL_EXEC-NEXT:        float _r_d0 = _d_z;
