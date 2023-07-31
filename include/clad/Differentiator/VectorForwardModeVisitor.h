@@ -32,17 +32,6 @@ public:
   DerivativeAndOverload DeriveVectorMode(const clang::FunctionDecl* FD,
                                          const DiffRequest& request);
 
-  /// Builds an overload for the vector mode function that has derived params
-  /// for all the arguments of the requested function and it calls the original
-  /// gradient function internally.
-  /// For ex.: if the original function is: double foo(double x, double y)
-  /// , then the generated vector mode overload will be:
-  /// double foo(double x, double y, void*, void*), irrespective of the
-  /// what parameters are requested to be differentiated w.r.t.
-  /// Inside it, we will call the original vector mode function with the
-  /// original parameters and the derived parameters.
-  clang::FunctionDecl* CreateVectorModeOverload();
-
   /// Builds and returns the sequence of derived function parameters for
   //  vectorized forward mode.
   ///
@@ -60,13 +49,12 @@ public:
   ///
   /// For example: for index = 2 and size = 4, the returned expression
   /// is: {0, 0, 1, 0}
-  clang::Expr* getOneHotInitExpr(size_t index, size_t size,
-                                 clang::QualType type);
+  clang::Expr* getOneHotInitExpr(size_t index, size_t size);
 
   /// Get an expression used to initialize a zero vector of the given size.
   ///
   /// For example: for size = 4, the returned expression is: {0, 0, 0, 0}
-  clang::Expr* getZeroInitListExpr(size_t size, clang::QualType type);
+  clang::Expr* getZeroInitListExpr(size_t size);
 
   StmtDiff VisitReturnStmt(const clang::ReturnStmt* RS) override;
   // Decl is not Stmt, so it cannot be visited directly.
