@@ -20,8 +20,6 @@ private:
   T* m_arr = nullptr;
   /// The size of the array
   std::size_t m_size = 0;
-  // Boolean to indicate if the array is owned by this class or not.
-  bool m_owned = true;
 
 public:
   /// Delete default constructor
@@ -36,9 +34,7 @@ public:
     (*this) = arr;
   }
 
-  // use this only if U and T are not the same type.
-  template <typename U, typename = typename std::enable_if<
-                            !std::is_same<T, U>::value>::type>
+  template <typename U>
   CUDA_HOST_DEVICE array(U* a, std::size_t size)
       : m_arr(new T[size]{static_cast<T>(T())}), m_size(size) {
     for (std::size_t i = 0; i < size; ++i)
