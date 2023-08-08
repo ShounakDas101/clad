@@ -237,9 +237,8 @@ clang::FunctionDecl* VectorForwardModeVisitor::CreateVectorModeOverload() {
   QualType outputParamType = GetCladArrayRefOfType(m_Context.VoidTy);
 
   // Push param types for derived params.
-  for (std::size_t i = 0; i < m_Function->getNumParams(); ++i) {
+  for (std::size_t i = 0; i < m_Function->getNumParams(); ++i)
     paramTypes.push_back(outputParamType);
-  }
 
   auto vectorModeFuncOverloadEPI =
       dyn_cast<FunctionProtoType>(m_Function->getType())->getExtProtoInfo();
