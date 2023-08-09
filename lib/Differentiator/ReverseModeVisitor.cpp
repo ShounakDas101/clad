@@ -743,14 +743,11 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
     beginBlock(direction::forward);
     beginBlock(direction::reverse);
     for (Stmt* S : CS->body()) {
-      if(dyn_cast<ReturnStmt>(S)){
+        if(isa<ReturnStmt>(S)){
         auto parents = m_Context.getParents(*CS);
         if (!parents.empty()){
           const Stmt* parentStmt =  parents[0].get<Stmt>();
-          if(parentStmt==nullptr)
-            OnlyReturn=true;
-          else
-            OnlyReturn=false;
+          OnlyReturn = parentStmt==nullptr;
         }else{
           OnlyReturn=true;
         }
