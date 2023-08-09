@@ -13,7 +13,6 @@
 #include "clad/Differentiator/StmtClone.h"
 #include "clad/Differentiator/ExternalRMVSource.h"
 #include "clad/Differentiator/MultiplexExternalRMVSource.h"
-#include "clang/AST/ParentMapContext.h"  
 #include "clang/AST/ASTContext.h"
 #include "clang/AST/Expr.h"
 #include "clang/AST/TemplateBase.h"
@@ -744,9 +743,7 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
     beginBlock(direction::forward);
     beginBlock(direction::reverse);
     for (Stmt* S : CS->body()) {
-      std::string cppString="ReturnStmt";
-      const char* cString = S->getStmtClassName();
-      if(cppString.compare(cString) == 0 ){
+      if(dyn_cast<ReturnStmt>(S)){
         auto parents = m_Context.getParents(*CS);
         if (!parents.empty()){
           const Stmt* parentStmt =  parents[0].get<Stmt>();
