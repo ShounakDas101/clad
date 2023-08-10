@@ -742,16 +742,10 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
     beginScope(Scope::DeclScope);
     beginBlock(direction::forward);
     beginBlock(direction::reverse);
+    CCount++;
     for (Stmt* S : CS->body()) {
-        if(isa<ReturnStmt>(S)){
-        auto parents = m_Context.getParents(*CS);
-        if (!parents.empty()){
-          const Stmt* parentStmt =  parents[0].get<Stmt>();
-          OnlyReturn = parentStmt==nullptr;
-        }else{
-          OnlyReturn=true;
-        }
-      }
+      if(isa<ReturnStmt>(S))
+        OnlyReturn=true;
       if (m_ExternalSource)
         m_ExternalSource->ActBeforeDifferentiatingStmtInVisitCompoundStmt();
       StmtDiff SDiff = DifferentiateSingleStmt(S);
@@ -764,6 +758,7 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
     CompoundStmt* Forward = endBlock(direction::forward);
     CompoundStmt* Reverse = endBlock(direction::reverse);
     endScope();
+    CCount--;
     return StmtDiff(Forward, Reverse);
   }
 

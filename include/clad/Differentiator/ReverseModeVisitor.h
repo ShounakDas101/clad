@@ -94,6 +94,7 @@ namespace clad {
 
     // Whether Stmt is Return and not inside any block;
     bool OnlyReturn = false;
+    int CCount = 0;
     
   public:
     using direction = rmv::direction;
