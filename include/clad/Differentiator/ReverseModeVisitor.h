@@ -11,6 +11,7 @@
 #include "clad/Differentiator/VisitorBase.h"
 #include "clad/Differentiator/ReverseModeVisitorDirectionKinds.h"
 #include "clad/Differentiator/ParseDiffArgsTypes.h"
+
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/AST/StmtVisitor.h"
 #include "clang/Sema/Sema.h"
@@ -92,6 +93,10 @@ namespace clad {
     // Function to Differentiate with Enzyme as Backend
     void DifferentiateWithEnzyme();
 
+    // Whether Stmt is Return and not inside any block;
+    bool OnlyReturn = false;
+    int CCount = 0;
+    
   public:
     using direction = rmv::direction;
     clang::Expr* dfdx() {
