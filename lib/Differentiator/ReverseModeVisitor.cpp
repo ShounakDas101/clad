@@ -744,7 +744,7 @@ Expr* getArraySizeExpr(const ArrayType* AT, ASTContext& context,
     beginBlock(direction::reverse);
     CCount++;
     for (Stmt* S : CS->body()) {
-      if(isa<ReturnStmt>(S))
+      if(CCount==1&&isa<ReturnStmt>(S))
         OnlyReturn=true;
       if (m_ExternalSource)
         m_ExternalSource->ActBeforeDifferentiatingStmtInVisitCompoundStmt();
