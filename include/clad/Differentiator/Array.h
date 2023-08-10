@@ -41,14 +41,6 @@ public:
       m_arr[i] = static_cast<T>(a[i]);
   }
 
-  CUDA_HOST_DEVICE array(T* a, std::size_t size, bool copy = true)
-      : m_arr(copy ? new T[size]{static_cast<T>(T())} : a), m_size(size),
-        m_owned(copy) {
-    if (copy)
-      for (std::size_t i = 0; i < size; ++i)
-        m_arr[i] = a[i];
-  }
-
   CUDA_HOST_DEVICE array(const array<T>& arr) : array(arr.m_arr, arr.m_size) {}
 
   CUDA_HOST_DEVICE array(std::size_t size, const clad::array<T>& arr)
@@ -270,22 +262,6 @@ public:
   CUDA_HOST_DEVICE operator T*() const { return m_arr; }
 }; // class array
 // NOLINTEND(*-pointer-arithmetic)
-
-// Function to instantiate a one-hot array of size n with 1 at index i.
-// A one-hot vector is a vector with all elements set to 0 except for one
-// element which is set to 1.
-// For example, if n=4 and i=2, the returned array is: {0, 0, 1, 0}
-template <typename T>
-CUDA_HOST_DEVICE array<T> one_hot_vector(std::size_t n, std::size_t i) {
-  array<T> arr(n);
-  arr[i] = 1;
-  return arr;
-}
-
-// Function to instantiate a zero vector of size n
-template <typename T> CUDA_HOST_DEVICE array<T> zero_vector(std::size_t n) {
-  return array<T>(n);
-}
 
 // Function to instantiate a one-hot array of size n with 1 at index i.
 // A one-hot vector is a vector with all elements set to 0 except for one
