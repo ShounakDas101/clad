@@ -53,8 +53,6 @@ double f2(double x, double y){
 // CHECK-NEXT:     _t8 = y;
 // CHECK-NEXT:     _t11 = y;
 // CHECK-NEXT:     _t10 = _d_y;
-// CHECK-NEXT:     goto _label0;
-// CHECK-NEXT:   _label0:
 // CHECK-NEXT:     {
 // CHECK-NEXT:         double _r0 = _d_y0.value * _t0;
 // CHECK-NEXT:         * _d_x += _r0;
